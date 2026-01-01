@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-nodes/ifc-query" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">IFCQuery | IFCNodes</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://BasselHarby.github.io/IFCNodes/nodes/ifc-query"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="IFCQuery | IFCNodes"><meta data-rh="true" name="description" content="Element-level data retrieval nodes. All methods accept a single GlobalId. To process multiple elements, use Dynamo&#x27;s lacing feature (right-click the node, then Lacing, then Longest or Cross Product)."><meta data-rh="true" property="og:description" content="Element-level data retrieval nodes. All methods accept a single GlobalId. To process multiple elements, use Dynamo&#x27;s lacing feature (right-click the node, then Lacing, then Longest or Cross Product)."><link data-rh="true" rel="icon" href="/IFCNodes/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://BasselHarby.github.io/IFCNodes/nodes/ifc-query"><link data-rh="true" rel="alternate" href="https://BasselHarby.github.io/IFCNodes/nodes/ifc-query" hreflang="en"><link data-rh="true" rel="alternate" href="https://BasselHarby.github.io/IFCNodes/nodes/ifc-query" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"IFCQuery","item":"https://BasselHarby.github.io/IFCNodes/nodes/ifc-query"}]}</script><link rel="stylesheet" href="/IFCNodes/assets/css/styles.6e3398fd.css">
+<script src="/IFCNodes/assets/js/runtime~main.b09e93b3.js" defer="defer"></script>
+<script src="/IFCNodes/assets/js/main.805f7ba4.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/IFCNodes/img/logo.svg"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/IFCNodes/"><div class="navbar__logo"><img src="/IFCNodes/img/logo.svg" alt="IFCNodes Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/IFCNodes/img/logo.svg" alt="IFCNodes Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">IFCNodes</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/IFCNodes/">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/BasselHarby/IFCNodes" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/IFCNodes/"><span title="Welcome to IFCNodes" class="linkLabel_WmDU">Welcome to IFCNodes</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/IFCNodes/getting-started"><span title="Getting Started" class="linkLabel_WmDU">Getting Started</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/IFCNodes/installation"><span title="Installation" class="linkLabel_WmDU">Installation</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/IFCNodes/nodes/ifc-reader"><span title="Node Reference" class="categoryLinkLabel_W154">Node Reference</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-reader"><span title="IFCReader" class="linkLabel_WmDU">IFCReader</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-model"><span title="IFCModel" class="linkLabel_WmDU">IFCModel</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/IFCNodes/nodes/ifc-query"><span title="IFCQuery" class="linkLabel_WmDU">IFCQuery</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-filter"><span title="IFCFilter" class="linkLabel_WmDU">IFCFilter</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-explore"><span title="IFCExplore" class="linkLabel_WmDU">IFCExplore</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-schema"><span title="IFCSchema" class="linkLabel_WmDU">IFCSchema</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-spatial-queries"><span title="IFCSpatialQueries" class="linkLabel_WmDU">IFCSpatialQueries</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-clash-detection"><span title="IFCClashDetection" class="linkLabel_WmDU">IFCClashDetection</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-geometry"><span title="IFCGeometry" class="linkLabel_WmDU">IFCGeometry</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-viewer"><span title="IFCViewer" class="linkLabel_WmDU">IFCViewer</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/IFCNodes/nodes/ifc-chat"><span title="IFCChat" class="linkLabel_WmDU">IFCChat</span></a></li></ul></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/IFCNodes/api-key-setup"><span title="API Key Setup" class="linkLabel_WmDU">API Key Setup</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/IFCNodes/examples"><span title="Examples" class="linkLabel_WmDU">Examples</span></a></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/IFCNodes/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Node Reference</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">IFCQuery</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>IFCQuery</h1></header>
+<p>Element-level data retrieval nodes. All methods accept a single GlobalId. To process multiple elements, use Dynamo&#x27;s lacing feature (right-click the node, then Lacing, then Longest or Cross Product).</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getelementdata">GetElementData<a href="#getelementdata" class="hash-link" aria-label="Direct link to GetElementData" title="Direct link to GetElementData" translate="no">​</a></h2>
+<p>Returns complete data for an IFC element including all available information.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>All element data organized by category</td></tr></tbody></table>
+<p><strong>Output Dictionary Contains:</strong></p>
+<ul>
+<li class="">Identity: GlobalId, Name, Description, Tag, ObjectType</li>
+<li class="">Type: IFC class and inheritance chain</li>
+<li class="">TypeDefinition: Type object data</li>
+<li class="">Attributes: Schema attributes</li>
+<li class="">Properties: All property sets</li>
+<li class="">Quantities: All quantity sets</li>
+<li class="">Materials: Material associations</li>
+<li class="">Associations: Classifications, documents, etc.</li>
+<li class="">Composition: Aggregation, nesting, openings</li>
+<li class="">Assignments: Groups, systems, zones</li>
+<li class="">Connectivity: Connections and ports</li>
+<li class="">SpatialContainment: Containing space or storey</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getidentity">GetIdentity<a href="#getidentity" class="hash-link" aria-label="Direct link to GetIdentity" title="Direct link to GetIdentity" translate="no">​</a></h2>
+<p>Returns identity information for an element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Identity information</td></tr></tbody></table>
+<p><strong>Output Contains:</strong></p>
+<ul>
+<li class="">GlobalId: Unique identifier</li>
+<li class="">Name: Element name</li>
+<li class="">Description: Element description</li>
+<li class="">Tag: Element tag</li>
+<li class="">ObjectType: Object type string</li>
+<li class="">OwnerHistory: Creation and modification info</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="gettypeinheritancechain">GetTypeInheritanceChain<a href="#gettypeinheritancechain" class="hash-link" aria-label="Direct link to GetTypeInheritanceChain" title="Direct link to GetTypeInheritanceChain" translate="no">​</a></h2>
+<p>Returns type and inheritance information for an element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Type and inheritance information</td></tr></tbody></table>
+<p><strong>Output Contains:</strong></p>
+<ul>
+<li class="">IfcClass: The element IFC class name</li>
+<li class="">InheritanceChain: List of parent classes</li>
+<li class="">PredefinedType: The predefined type value</li>
+<li class="">IsAbstract: Whether the class is abstract</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getattributes">GetAttributes<a href="#getattributes" class="hash-link" aria-label="Direct link to GetAttributes" title="Direct link to GetAttributes" translate="no">​</a></h2>
+<p>Returns all explicit attributes for an element based on the IFC schema. Includes attributes inherited from parent classes.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Attribute names and values</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="gettypedefinition">GetTypeDefinition<a href="#gettypedefinition" class="hash-link" aria-label="Direct link to GetTypeDefinition" title="Direct link to GetTypeDefinition" translate="no">​</a></h2>
+<p>Returns the type object definition for an element via the IsTypedBy relationship. Includes type properties, quantities, and materials.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Type object data</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getproperties">GetProperties<a href="#getproperties" class="hash-link" aria-label="Direct link to GetProperties" title="Direct link to GetProperties" translate="no">​</a></h2>
+<p>Returns all property sets for an element with their properties. For standard PSets, includes metadata about expected and missing properties.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Property set names as keys and property data as values</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getpropertyvalue">GetPropertyValue<a href="#getpropertyvalue" class="hash-link" aria-label="Direct link to GetPropertyValue" title="Direct link to GetPropertyValue" translate="no">​</a></h2>
+<p>Returns a single property value for an element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr><tr><td>propertyPath</td><td>string</td><td>Property path: &quot;PropertyName&quot; (any PSet) or &quot;PsetName.PropertyName&quot; (specific PSet)</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>object</td><td>The property value, or empty string if not found</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getquantities">GetQuantities<a href="#getquantities" class="hash-link" aria-label="Direct link to GetQuantities" title="Direct link to GetQuantities" translate="no">​</a></h2>
+<p>Returns all quantity sets for an element with their quantities. For standard QSets, includes metadata about expected and missing quantities.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Quantity set names as keys and quantity data as values</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getquantityvalue">GetQuantityValue<a href="#getquantityvalue" class="hash-link" aria-label="Direct link to GetQuantityValue" title="Direct link to GetQuantityValue" translate="no">​</a></h2>
+<p>Returns a single quantity value for an element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr><tr><td>quantityPath</td><td>string</td><td>Quantity path: &quot;QuantityName&quot; (any QSet) or &quot;QsetName.QuantityName&quot; (specific QSet)</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>double</td><td>The quantity value, or 0 if not found</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getmaterials">GetMaterials<a href="#getmaterials" class="hash-link" aria-label="Direct link to GetMaterials" title="Direct link to GetMaterials" translate="no">​</a></h2>
+<p>Returns material data for an element including single materials, layer sets, profile sets, and constituent sets. If the element has no direct material association, returns the material from its type object.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Material information</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getclassifications">GetClassifications<a href="#getclassifications" class="hash-link" aria-label="Direct link to GetClassifications" title="Direct link to GetClassifications" translate="no">​</a></h2>
+<p>Returns classification references for an element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of Dictionary</td><td>Classification dictionaries</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getdocuments">GetDocuments<a href="#getdocuments" class="hash-link" aria-label="Direct link to GetDocuments" title="Direct link to GetDocuments" translate="no">​</a></h2>
+<p>Returns document references for an element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of Dictionary</td><td>Document dictionaries</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getassociations">GetAssociations<a href="#getassociations" class="hash-link" aria-label="Direct link to GetAssociations" title="Direct link to GetAssociations" translate="no">​</a></h2>
+<p>Returns all associations for an element including materials, classifications, documents, libraries, constraints, and approvals.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Association categories</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getcomposition">GetComposition<a href="#getcomposition" class="hash-link" aria-label="Direct link to GetComposition" title="Direct link to GetComposition" translate="no">​</a></h2>
+<p>Returns composition relationships for an element including aggregation (Decomposes/IsDecomposedBy), nesting (Nests/IsNestedBy), openings, coverings, projections, and surface features.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Composition relationships</td></tr></tbody></table>
+<div class="alert-box info"><p><strong>Note:</strong> This returns explicitly defined IFC relationships only. For geometric-based relationships (elements physically inside other elements), use IFCSpatialQueries.</p></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getopenings">GetOpenings<a href="#getopenings" class="hash-link" aria-label="Direct link to GetOpenings" title="Direct link to GetOpenings" translate="no">​</a></h2>
+<p>Returns openings (voids) in an element and the elements that fill them.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of Dictionary</td><td>Opening dictionaries with FilledBy information</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="gethostelement">GetHostElement<a href="#gethostelement" class="hash-link" aria-label="Direct link to GetHostElement" title="Direct link to GetHostElement" translate="no">​</a></h2>
+<p>Returns the host element if this element fills a void (e.g., door in wall).</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Host element information, or empty if not filling a void</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getassignments">GetAssignments<a href="#getassignments" class="hash-link" aria-label="Direct link to GetAssignments" title="Direct link to GetAssignments" translate="no">​</a></h2>
+<p>Returns all assignment relationships for an element including groups, systems, zones, actors, processes, controls, and resources.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Assignment categories</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getgroups">GetGroups<a href="#getgroups" class="hash-link" aria-label="Direct link to GetGroups" title="Direct link to GetGroups" translate="no">​</a></h2>
+<p>Returns the groups an element is assigned to.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of Dictionary</td><td>Group dictionaries</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getconnectivity">GetConnectivity<a href="#getconnectivity" class="hash-link" aria-label="Direct link to GetConnectivity" title="Direct link to GetConnectivity" translate="no">​</a></h2>
+<p>Returns all connectivity relationships for an element including element connections, path connections, ports, interferences, and space boundaries.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Connectivity categories</td></tr></tbody></table>
+<div class="alert-box info"><p><strong>Note:</strong> This returns explicitly defined IFC relationships only. For geometric-based connectivity (elements touching or intersecting), use IFCSpatialQueries.</p></div>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getconnectedelements">GetConnectedElements<a href="#getconnectedelements" class="hash-link" aria-label="Direct link to GetConnectedElements" title="Direct link to GetConnectedElements" translate="no">​</a></h2>
+<p>Returns all elements connected to this element via explicit IFC relationships.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of Dictionary</td><td>Connected element dictionaries</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getspatialcontainment">GetSpatialContainment<a href="#getspatialcontainment" class="hash-link" aria-label="Direct link to GetSpatialContainment" title="Direct link to GetSpatialContainment" translate="no">​</a></h2>
+<p>Returns spatial containment information for an element including the containing spatial structure and referenced structures.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Spatial containment and placement</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getcontainingelement">GetContainingElement<a href="#getcontainingelement" class="hash-link" aria-label="Direct link to GetContainingElement" title="Direct link to GetContainingElement" translate="no">​</a></h2>
+<p>Returns the spatial structure element containing this element (e.g., the storey).</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Containing spatial element, or empty if not contained</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getplacement">GetPlacement<a href="#getplacement" class="hash-link" aria-label="Direct link to GetPlacement" title="Direct link to GetPlacement" translate="no">​</a></h2>
+<p>Returns the placement and location of an element in the model coordinate system.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>X, Y, Z coordinates and placement type</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getspaceboundaries">GetSpaceBoundaries<a href="#getspaceboundaries" class="hash-link" aria-label="Direct link to GetSpaceBoundaries" title="Direct link to GetSpaceBoundaries" translate="no">​</a></h2>
+<p>Returns space boundaries for an element showing which spaces it bounds.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of Dictionary</td><td>Space boundary dictionaries</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="elementexists">ElementExists<a href="#elementexists" class="hash-link" aria-label="Direct link to ElementExists" title="Direct link to ElementExists" translate="no">​</a></h2>
+<p>Checks if an element exists in the model.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) to check</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>bool</td><td>True if element exists, false otherwise</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getelementsummary">GetElementSummary<a href="#getelementsummary" class="hash-link" aria-label="Direct link to GetElementSummary" title="Direct link to GetElementSummary" translate="no">​</a></h2>
+<p>Returns basic summary information for an element. Useful for quick identification without retrieving all data.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>GlobalId, Name, IfcClass, and PredefinedType</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getelementsofsametype">GetElementsOfSameType<a href="#getelementsofsametype" class="hash-link" aria-label="Direct link to GetElementsOfSameType" title="Direct link to GetElementsOfSameType" translate="no">​</a></h2>
+<p>Returns the GlobalIds of all elements that share the same type object as the given element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of string</td><td>GlobalIds sharing the same type object</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getelementsinsamecontainer">GetElementsInSameContainer<a href="#getelementsinsamecontainer" class="hash-link" aria-label="Direct link to GetElementsInSameContainer" title="Direct link to GetElementsInSameContainer" translate="no">​</a></h2>
+<p>Returns the GlobalIds of all elements in the same spatial container as the given element.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>List of string</td><td>GlobalIds in the same spatial container</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getelementrepresentations">GetElementRepresentations<a href="#getelementrepresentations" class="hash-link" aria-label="Direct link to GetElementRepresentations" title="Direct link to GetElementRepresentations" translate="no">​</a></h2>
+<p>Returns detailed information about an element&#x27;s representations and mapped representations. Useful for understanding geometry structure and debugging extraction issues.</p>
+<p><strong>Inputs:</strong></p>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>ifcModel</td><td>IFCModel</td><td>The loaded IFC Model</td></tr><tr><td>globalId</td><td>string</td><td>The Global Unique ID (GUID) of the element</td></tr></tbody></table>
+<p><strong>Output:</strong></p>
+<table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Dictionary</td><td>Representation details including types, identifiers, and item counts</td></tr></tbody></table></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/IFCNodes/nodes/ifc-model"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">IFCModel</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/IFCNodes/nodes/ifc-filter"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">IFCFilter</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#getelementdata" class="table-of-contents__link toc-highlight">GetElementData</a></li><li><a href="#getidentity" class="table-of-contents__link toc-highlight">GetIdentity</a></li><li><a href="#gettypeinheritancechain" class="table-of-contents__link toc-highlight">GetTypeInheritanceChain</a></li><li><a href="#getattributes" class="table-of-contents__link toc-highlight">GetAttributes</a></li><li><a href="#gettypedefinition" class="table-of-contents__link toc-highlight">GetTypeDefinition</a></li><li><a href="#getproperties" class="table-of-contents__link toc-highlight">GetProperties</a></li><li><a href="#getpropertyvalue" class="table-of-contents__link toc-highlight">GetPropertyValue</a></li><li><a href="#getquantities" class="table-of-contents__link toc-highlight">GetQuantities</a></li><li><a href="#getquantityvalue" class="table-of-contents__link toc-highlight">GetQuantityValue</a></li><li><a href="#getmaterials" class="table-of-contents__link toc-highlight">GetMaterials</a></li><li><a href="#getclassifications" class="table-of-contents__link toc-highlight">GetClassifications</a></li><li><a href="#getdocuments" class="table-of-contents__link toc-highlight">GetDocuments</a></li><li><a href="#getassociations" class="table-of-contents__link toc-highlight">GetAssociations</a></li><li><a href="#getcomposition" class="table-of-contents__link toc-highlight">GetComposition</a></li><li><a href="#getopenings" class="table-of-contents__link toc-highlight">GetOpenings</a></li><li><a href="#gethostelement" class="table-of-contents__link toc-highlight">GetHostElement</a></li><li><a href="#getassignments" class="table-of-contents__link toc-highlight">GetAssignments</a></li><li><a href="#getgroups" class="table-of-contents__link toc-highlight">GetGroups</a></li><li><a href="#getconnectivity" class="table-of-contents__link toc-highlight">GetConnectivity</a></li><li><a href="#getconnectedelements" class="table-of-contents__link toc-highlight">GetConnectedElements</a></li><li><a href="#getspatialcontainment" class="table-of-contents__link toc-highlight">GetSpatialContainment</a></li><li><a href="#getcontainingelement" class="table-of-contents__link toc-highlight">GetContainingElement</a></li><li><a href="#getplacement" class="table-of-contents__link toc-highlight">GetPlacement</a></li><li><a href="#getspaceboundaries" class="table-of-contents__link toc-highlight">GetSpaceBoundaries</a></li><li><a href="#elementexists" class="table-of-contents__link toc-highlight">ElementExists</a></li><li><a href="#getelementsummary" class="table-of-contents__link toc-highlight">GetElementSummary</a></li><li><a href="#getelementsofsametype" class="table-of-contents__link toc-highlight">GetElementsOfSameType</a></li><li><a href="#getelementsinsamecontainer" class="table-of-contents__link toc-highlight">GetElementsInSameContainer</a></li><li><a href="#getelementrepresentations" class="table-of-contents__link toc-highlight">GetElementRepresentations</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/IFCNodes/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/IFCNodes/nodes/ifc-reader">Node Reference</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Resources</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/BasselHarby/IFCNodes" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://forum.dynamobim.com/" target="_blank" rel="noopener noreferrer" class="footer__link-item">Dynamo Forum<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 IFCNodes. Built with Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
