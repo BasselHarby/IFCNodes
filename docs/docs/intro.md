@@ -50,7 +50,7 @@ IFCNodes is a comprehensive Dynamo package that enables you to load, query, filt
 
 - **[Getting Started](./getting-started)** - Basic concepts and your first workflow
 - **[Installation](./installation)** - How to install the package
-- **[Node Reference](./category/node-reference)** - Complete documentation for all nodes
+- **[Node Reference](./nodes/ifc-reader)** - Complete documentation for all nodes
 - **[API Key Setup](./api-key-setup)** - Configure AI chat features
 - **[Examples](./examples)** - Real-world workflow examples
 

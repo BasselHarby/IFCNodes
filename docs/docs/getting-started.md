@@ -82,5 +82,5 @@ IFCNodes filters return lists of GlobalIds. You can combine them using Dynamo's 
 ## Next Steps
 
 - [Installation Guide](./installation) - Different installation methods
-- [Node Reference](./category/node-reference) - Detailed node documentation
+- [Node Reference](./nodes/ifc-reader) - Detailed node documentation
 - [Examples](./examples) - Real-world workflow examples
