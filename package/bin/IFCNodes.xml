@@ -1,0 +1,1410 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IFCNodes</name>
+    </assembly>
+    <members>
+        <member name="T:IFCNodes.CachedMeshData">
+            <summary>
+            Cached mesh data for MappedItem reuse.
+            Stores untransformed geometry that can be transformed for each instance.
+            </summary>
+        </member>
+        <member name="T:IFCNodes.ResolvedGeometry">
+            <summary>
+            Resolved geometry containing vertices, triangles, and bounding box.
+            </summary>
+        </member>
+        <member name="T:IFCNodes.GeometryHelper">
+            <summary>
+            Helper class for extracting and processing IFC geometry.
+            Uses optimized extraction paths: direct extraction for triangulated data,
+            XbimTessellator for tessellatable geometry, and XbimGeometryEngine for parametric geometry.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ResolveProductGeometry(Xbim.Ifc.IfcStore,Xbim.Ifc4.Interfaces.IIfcProduct,Xbim.Geometry.Engine.Interop.XbimGeometryEngine,System.Collections.Generic.Dictionary{System.String,IFCNodes.CachedMeshData},System.String)">
+            <summary>
+            Resolves product geometry using the default "Body" representation.
+            </summary>
+            <param name="store">The IFC store containing the product.</param>
+            <param name="product">The product to extract geometry from.</param>
+            <param name="geometryEngine">The geometry engine for parametric geometry processing.</param>
+            <param name="mappedItemCache">Optional cache for MappedItem geometry reuse. Key format: "{SourceModel}:{EntityLabel}".</param>
+            <param name="sourceModelName">Name of the source model for cache key generation.</param>
+            <returns>Resolved geometry or null if extraction fails.</returns>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ResolveProductGeometryByRepresentation(Xbim.Ifc.IfcStore,Xbim.Ifc4.Interfaces.IIfcProduct,System.String,Xbim.Geometry.Engine.Interop.XbimGeometryEngine,System.Collections.Generic.Dictionary{System.String,IFCNodes.CachedMeshData},System.String)">
+            <summary>
+            Resolves product geometry for a specific representation identifier.
+            </summary>
+            <param name="store">The IFC store containing the product.</param>
+            <param name="product">The product to extract geometry from.</param>
+            <param name="representationIdentifier">The representation identifier to use (e.g., "Body", "Box"). Empty string uses priority selection.</param>
+            <param name="geometryEngine">The geometry engine for parametric geometry processing.</param>
+            <param name="mappedItemCache">Optional cache for MappedItem geometry reuse.</param>
+            <param name="sourceModelName">Name of the source model for cache key generation.</param>
+            <returns>Resolved geometry or null if extraction fails.</returns>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ResolveProductGeometry(Xbim.Ifc.IfcStore,Xbim.Ifc4.Interfaces.IIfcProduct,Xbim.Geometry.Engine.Interop.XbimGeometryEngine)">
+            <summary>
+            Resolves product geometry using the default "Body" representation.
+            Overload without caching support for backward compatibility.
+            </summary>
+            <param name="store">The IFC store containing the product.</param>
+            <param name="product">The product to extract geometry from.</param>
+            <param name="geometryEngine">The geometry engine for parametric geometry processing.</param>
+            <returns>Resolved geometry or null if extraction fails.</returns>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ResolveProductGeometryByRepresentation(Xbim.Ifc.IfcStore,Xbim.Ifc4.Interfaces.IIfcProduct,System.String)">
+            <summary>
+            Resolves product geometry for a specific representation identifier.
+            Overload without caching support for backward compatibility.
+            </summary>
+            <param name="store">The IFC store containing the product.</param>
+            <param name="product">The product to extract geometry from.</param>
+            <param name="representationIdentifier">The representation identifier to use (e.g., "Body", "Box"). Empty string uses priority selection.</param>
+            <returns>Resolved geometry or null if extraction fails.</returns>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ResolveProductGeometryByRepresentation(Xbim.Ifc.IfcStore,Xbim.Ifc4.Interfaces.IIfcProduct,System.String,Xbim.Geometry.Engine.Interop.XbimGeometryEngine)">
+            <summary>
+            Resolves product geometry for a specific representation identifier.
+            Overload with geometry engine but without caching support.
+            </summary>
+            <param name="store">The IFC store containing the product.</param>
+            <param name="product">The product to extract geometry from.</param>
+            <param name="representationIdentifier">The representation identifier to use (e.g., "Body", "Box"). Empty string uses priority selection.</param>
+            <param name="geometryEngine">The geometry engine for parametric geometry processing.</param>
+            <returns>Resolved geometry or null if extraction fails.</returns>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.SelectRepresentation(Xbim.Ifc4.Interfaces.IIfcProduct,System.String)">
+            <summary>
+            Selects the appropriate representation based on identifier or priority.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.CheckIfNeedsGeometryEngine(Xbim.Ifc4.Interfaces.IIfcRepresentation,Xbim.Tessellator.XbimTessellator)">
+            <summary>
+            Checks if any item in the representation requires the geometry engine.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ItemNeedsGeometryEngine(Xbim.Ifc4.Interfaces.IIfcRepresentationItem,Xbim.Tessellator.XbimTessellator)">
+            <summary>
+            Recursively checks if an item needs geometry engine processing.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ProcessRepresentationItem(Xbim.Ifc4.Interfaces.IIfcRepresentationItem,Xbim.Ifc.IfcStore,Xbim.Common.Geometry.XbimMatrix3D,Xbim.Common.Geometry.XbimMatrix3D,Xbim.Tessellator.XbimTessellator,Xbim.Geometry.Engine.Interop.XbimGeometryEngine,System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D},System.Collections.Generic.List{System.Int32[]},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimSolid},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimShell},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimFace},System.Collections.Generic.HashSet{System.Int32},System.Collections.Generic.Dictionary{System.String,IFCNodes.CachedMeshData},System.String,System.Double,System.Double)">
+            <summary>
+            Processes a representation item using the appropriate extraction method.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ProcessMappedItem(Xbim.Ifc4.Interfaces.IIfcMappedItem,Xbim.Ifc.IfcStore,Xbim.Common.Geometry.XbimMatrix3D,Xbim.Common.Geometry.XbimMatrix3D,Xbim.Tessellator.XbimTessellator,Xbim.Geometry.Engine.Interop.XbimGeometryEngine,System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D},System.Collections.Generic.List{System.Int32[]},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimSolid},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimShell},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimFace},System.Collections.Generic.HashSet{System.Int32},System.Collections.Generic.Dictionary{System.String,IFCNodes.CachedMeshData},System.String,System.Double,System.Double)">
+            <summary>
+            Processes a MappedItem with caching support.
+            </summary>
+            <summary>
+            Processes a MappedItem with caching support.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ApplyCachedMesh(IFCNodes.CachedMeshData,Xbim.Common.Geometry.XbimMatrix3D,System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D},System.Collections.Generic.List{System.Int32[]})">
+            <summary>
+            Applies cached mesh data with a transform to the output lists.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ExtractTriangulatedFaceSet(Xbim.Ifc4.Interfaces.IIfcTriangulatedFaceSet,Xbim.Common.Geometry.XbimMatrix3D,System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D},System.Collections.Generic.List{System.Int32[]})">
+            <summary>
+            Directly extracts geometry from IIfcTriangulatedFaceSet (already triangulated).
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ReadShapeGeometry(System.String,Xbim.Common.Geometry.XbimMatrix3D,System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D},System.Collections.Generic.List{System.Int32[]})">
+            <summary>
+            Reads binary shape geometry data and extracts vertices and triangles.
+            </summary>
+            <summary>
+            Reads shape geometry data and extracts vertices and triangles.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.CollectParametricGeometry(Xbim.Common.Geometry.IXbimGeometryObject,System.Collections.Generic.List{Xbim.Common.Geometry.IXbimSolid},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimShell},System.Collections.Generic.List{Xbim.Common.Geometry.IXbimFace})">
+            <summary>
+            Collects parametric geometry objects into appropriate lists.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.CollectSolidsOnly(Xbim.Common.Geometry.IXbimGeometryObject,System.Collections.Generic.List{Xbim.Common.Geometry.IXbimSolid})">
+            <summary>
+            Collects only solid geometry objects.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.TessellateAndCollect(Xbim.Common.Geometry.IXbimGeometryObject,Xbim.Common.Geometry.XbimMatrix3D,Xbim.Geometry.Engine.Interop.XbimGeometryEngine,System.Double,System.Double,System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D},System.Collections.Generic.List{System.Int32[]})">
+            <summary>
+            Tessellates a geometry object and adds the result to the output lists.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ApplyOpeningSubtractions(System.Collections.Generic.List{Xbim.Common.Geometry.IXbimSolid},System.Collections.Generic.List{Xbim.Ifc4.Interfaces.IIfcRelVoidsElement},Xbim.Geometry.Engine.Interop.XbimGeometryEngine,System.Double,Xbim.Common.Geometry.XbimMatrix3D,System.Nullable{Xbim.Common.Geometry.XbimMatrix3D})">
+            <summary>
+            Applies opening subtractions to solid geometry.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.GetLocalPlacementTransform(Xbim.Ifc4.Interfaces.IIfcLocalPlacement,Xbim.Geometry.Engine.Interop.XbimGeometryEngine)">
+            <summary>
+            Gets the local placement transform for an opening element.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.CalculateMaterialLayerOffset(Xbim.Ifc4.Interfaces.IIfcElement)">
+            <summary>
+            Calculates the material layer offset transform for an element.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.TransformPoint(System.Double,System.Double,System.Double,Xbim.Common.Geometry.XbimMatrix3D)">
+            <summary>
+            Transforms a point using a matrix.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.TransformVertices(System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D},Xbim.Common.Geometry.XbimMatrix3D)">
+            <summary>
+            Transforms a list of vertices using a matrix.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.TransformSolids(System.Collections.Generic.List{Xbim.Common.Geometry.IXbimSolid},Xbim.Common.Geometry.XbimMatrix3D)">
+            <summary>
+            Transforms a list of solids.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.TransformShells(System.Collections.Generic.List{Xbim.Common.Geometry.IXbimShell},Xbim.Common.Geometry.XbimMatrix3D)">
+            <summary>
+            Transforms a list of shells.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.TransformFaces(System.Collections.Generic.List{Xbim.Common.Geometry.IXbimFace},Xbim.Common.Geometry.XbimMatrix3D)">
+            <summary>
+            Transforms a list of faces.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.CreateTransformFromPlacement(Xbim.Ifc4.Interfaces.IIfcAxis2Placement)">
+            <summary>
+            Creates a transform matrix from an IIfcAxis2Placement.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.CreateTransformFromOperator3D(Xbim.Ifc4.Interfaces.IIfcCartesianTransformationOperator3D)">
+            <summary>
+            Creates a transform matrix from an IIfcCartesianTransformationOperator3D.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.CreateTransformFromOperator2D(Xbim.Ifc4.Interfaces.IIfcCartesianTransformationOperator)">
+            <summary>
+            Creates a transform matrix from an IIfcCartesianTransformationOperator (2D).
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.InvertMatrix(Xbim.Common.Geometry.XbimMatrix3D)">
+            <summary>
+            Inverts a transformation matrix.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.GeometryHelper.ComputeBoundingBox(System.Collections.Generic.List{Xbim.Common.Geometry.XbimPoint3D})">
+            <summary>
+            Computes the bounding box for a list of vertices.
+            </summary>
+        </member>
+        <member name="T:IFCNodes.IFCClashDetection">
+            <summary>
+            Provides clash detection between IFC elements using bounding box and mesh analysis.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCClashDetection.DetectClashes(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Double,System.Double)">
+            <summary>
+            Detects geometric clashes between two sets of elements.
+            Hard clashes: volumetric mesh intersections only.
+            Soft clashes: touch and clearance violations (requires clearance > 0).
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="setA">List of GlobalIds for the first element set.</param>
+            <param name="setB">List of GlobalIds for the second element set.</param>
+            <param name="clearance">Minimum required clearance distance in model units.
+            When 0, only hard clashes (intersections) are detected.
+            When greater than 0, also detects soft clashes (touch and clearance violations).</param>
+            <param name="tolerance">Optional tolerance for geometric comparisons in model units.
+            Default is -1, which uses the model's precision value.
+            Set a positive value to override the model precision.</param>
+            <returns>Dictionary containing clash results and statistics.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCClashDetection.GetClashSummaryByElement(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Double,System.Double)">
+            <summary>
+            Returns clash results grouped by element, showing which elements each element clashes with.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="setA">List of GlobalIds for the first element set.</param>
+            <param name="setB">List of GlobalIds for the second element set.</param>
+            <param name="clearance">Minimum required clearance distance in model units.
+            Default is 0, which only detects hard clashes.</param>
+            <param name="tolerance">Optional tolerance for geometric comparisons in model units.
+            Default is -1, which uses the model's precision value.</param>
+            <returns>List of dictionaries, each containing an element's GlobalId and its list of clashing elements.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCClashDetection.DetectSelfClashes(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.Double,System.Double)">
+            <summary>
+            Detects all clashing pairs within a single set of elements.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="elementSet">List of GlobalIds to check for internal clashes.</param>
+            <param name="clearance">Minimum required clearance distance in model units.
+            Default is 0, which only detects hard clashes.</param>
+            <param name="tolerance">Optional tolerance for geometric comparisons in model units.
+            Default is -1, which uses the model's precision value.</param>
+            <returns>Dictionary containing clash results.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCClashDetection.GetClashPairs(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Double,System.Double)">
+            <summary>
+            Returns only the GlobalId pairs of clashing elements.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="setA">List of GlobalIds for the first element set.</param>
+            <param name="setB">List of GlobalIds for the second element set.</param>
+            <param name="clearance">Minimum required clearance distance in model units.
+            Default is 0, which only detects hard clashes.</param>
+            <param name="tolerance">Optional tolerance for geometric comparisons in model units.
+            Default is -1, which uses the model's precision value.</param>
+            <returns>List of string arrays, each containing two clashing GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCClashDetection.GetClashingElements(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Double,System.Double)">
+            <summary>
+            Returns GlobalIds of all elements that have at least one clash.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="setA">List of GlobalIds for the first element set.</param>
+            <param name="setB">List of GlobalIds for the second element set.</param>
+            <param name="clearance">Minimum required clearance distance in model units.
+            Default is 0, which only detects hard clashes.</param>
+            <param name="tolerance">Optional tolerance for geometric comparisons in model units.
+            Default is -1, which uses the model's precision value.</param>
+            <returns>List of GlobalIds of elements involved in clashes.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCClashDetection.GetNonClashingElements(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Double,System.Double)">
+            <summary>
+            Returns GlobalIds of elements from setA that have no clashes with setB.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="setA">List of GlobalIds for the first element set.</param>
+            <param name="setB">List of GlobalIds for the second element set.</param>
+            <param name="clearance">Minimum required clearance distance in model units.
+            Default is 0, which only detects hard clashes.</param>
+            <param name="tolerance">Optional tolerance for geometric comparisons in model units.
+            Default is -1, which uses the model's precision value.</param>
+            <returns>List of GlobalIds of elements without clashes.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCClashDetection.FilterClashesByType(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+            <summary>
+            Filters clashes by type.
+            </summary>
+            <param name="clashResult">The result from DetectClashes.</param>
+            <param name="clashType">Type to filter: "Intersection", "Touch", or "Clearance".</param>
+            <returns>List of clashes matching the specified type.</returns>
+        </member>
+        <member name="T:IFCNodes.IFCExplore">
+            <summary>
+            Provides model-wide discovery methods to explore what exists in a loaded IFC model.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetTypes(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all unique IFC class types used in the model with usage counts.
+            Optionally filter to subtypes of a base class.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="baseClass">Optional base class to filter results to only subtypes of this class 
+            (e.g., "IfcBuildingElement" returns only walls, doors, windows, etc.). 
+            Use IFCSchema.GetAllEntityNames() or IFCSchema.GetEntitySubtypes() to discover valid values. 
+            Empty returns all product types.</param>
+            <returns>List of dictionaries containing IfcClass, Count, and PredefinedTypes used.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetTypeObjects(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all IfcTypeObject instances in the model.
+            Optionally filter by type class.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="ifcTypeClass">Optional type class filter to return only specific type objects 
+            (e.g., "IfcWallType" returns only wall types, "IfcDoorType" returns only door types). 
+            Use IFCSchema.GetAllEntityNames() or IFCSchema.GetEntitySubtypes("IfcTypeObject") to discover valid values. 
+            Empty returns all type objects.</param>
+            <returns>List of dictionaries containing GlobalId, Name, IfcClass, and AppliedToCount.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetMaterials(IFCNodes.IFCModel)">
+            <summary>
+            Returns all materials in the model with usage counts.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>List of dictionaries containing Name, Category, UsageCount, and HasProperties.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetMaterialStructures(IFCNodes.IFCModel)">
+            <summary>
+            Returns all material layer sets, profile sets, and constituent sets in the model.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>List of dictionaries with full material structure details.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetPropertySets(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all property sets in the model with usage information.
+            Optionally filter by property set name.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="psetName">Optional PSet name filter. Empty returns all.</param>
+            <returns>List of dictionaries with PSet details.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetQuantitySets(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all quantity sets in the model with usage information.
+            Optionally filter by quantity set name.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="qsetName">Optional QSet name filter. Empty returns all.</param>
+            <returns>List of dictionaries with QSet details.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetPropertyValues(IFCNodes.IFCModel,System.String,System.Boolean)">
+            <summary>
+            Returns property values distribution or detailed values for a property across the model.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="propertyName">Property name: "PropertyName" or "PsetName.PropertyName".</param>
+            <param name="verbose">If true, returns all values with element GlobalIds. If false, returns value counts.</param>
+            <returns>Dictionary mapping values to counts (verbose=false) or list of value details (verbose=true).</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetQuantityValues(IFCNodes.IFCModel,System.String,System.Boolean)">
+            <summary>
+            Returns quantity values distribution or detailed values for a quantity across the model.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="quantityName">Quantity name: "QuantityName" or "QsetName.QuantityName".</param>
+            <param name="verbose">If true, returns all values with element GlobalIds. If false, returns statistics (Min, Max, Sum, Count, Average).</param>
+            <returns>Dictionary with statistics (verbose=false) or list of value details (verbose=true).</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetClassifications(IFCNodes.IFCModel)">
+            <summary>
+            Returns all classification systems used in the model.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>List of dictionaries with classification system details.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetDocuments(IFCNodes.IFCModel)">
+            <summary>
+            Returns all documents referenced in the model.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>List of dictionaries with document details and usage counts.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetGroups(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all groups, systems, and zones in the model.
+            Optionally filter by group type.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="groupType">Optional filter: "IfcGroup", "IfcSystem", "IfcZone", or empty for all.</param>
+            <returns>List of dictionaries with group details.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetSpatialElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all spatial elements in the model.
+            Optionally filter by spatial type.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="spatialType">Optional filter: "Site", "Building", "Storey", "Space", or empty for all.</param>
+            <returns>List of dictionaries with spatial element details.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetSpatialStructure(IFCNodes.IFCModel)">
+            <summary>
+            Returns the complete spatial hierarchy tree of the model.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>Dictionary representing the project tree structure.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCExplore.GetProjectContext(IFCNodes.IFCModel)">
+            <summary>
+            Returns complete project context including units, coordinate system, and project info.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>Dictionary with project context details.</returns>
+        </member>
+        <member name="T:IFCNodes.IFCFilter">
+            <summary>
+            Provides element filtering methods. All filters return List of GlobalIds.
+            Use Dynamo's native List.SetIntersection for AND, List.SetUnion for OR, 
+            and List.SetDifference for NOT operations.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ComparisonOperators">
+            <summary>
+            Returns all valid comparison operators for filter nodes.
+            Use these values for the 'op' parameter in filter methods.
+            </summary>
+            <returns>List of valid operator strings.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.RelationshipTypes">
+            <summary>
+            Returns all valid relationship types for ByRelationship filter.
+            </summary>
+            <returns>List of valid relationship type strings.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.SpatialTypes">
+            <summary>
+            Returns all valid spatial types for BySpatialContainment filter.
+            </summary>
+            <returns>List of valid spatial type strings.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.AssociationTypes">
+            <summary>
+            Returns all valid association types for ByAssociation filter.
+            </summary>
+            <returns>List of valid association type strings.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.AttributeNames(System.String)">
+            <summary>
+            Returns valid attribute names that can be used with ByAttribute filter.
+            Optionally filter by IFC class to get class-specific attributes.
+            </summary>
+            <param name="ifcClassName">Optional IFC class name to get class-specific attributes.</param>
+            <returns>List of valid attribute names.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.AllElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all element GlobalIds in the model.
+            Optionally filter to a base class and its subtypes.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="baseClass">Optional base class filter (e.g., "IfcWall", "IfcBuildingElement"). Empty returns all products.</param>
+            <returns>List of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ElementsInSpatial(IFCNodes.IFCModel,System.String,System.Boolean)">
+            <summary>
+            Returns GlobalIds of all elements contained in a spatial structure element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="spatialGlobalIdOrName">GlobalId or Name of the spatial element (Site, Building, Storey, Space). 
+            Use IFCExplore.GetSpatialElements() to discover available spatial elements.</param>
+            <param name="includeNested">If true, includes elements in nested spatial structures.</param>
+            <returns>List of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ElementsInGroup(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns GlobalIds of all elements assigned to a group, system, or zone.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="groupGlobalIdOrName">GlobalId or Name of the group.</param>
+            <returns>List of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ElementsOfTypeObject(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns GlobalIds of all elements typed by a specific type object.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="typeGlobalIdOrName">GlobalId or Name of the type object.</param>
+            <returns>List of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ElementsWithMaterial(IFCNodes.IFCModel,System.String,System.String)">
+            <summary>
+            Returns GlobalIds of all elements using a specific material.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="materialName">Material name to search for.</param>
+            <param name="matchOperator">How to match: "=" (exact), "contains", "startswith", "endswith".</param>
+            <returns>List of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ElementsWithClassification(IFCNodes.IFCModel,System.String,System.String)">
+            <summary>
+            Returns GlobalIds of all elements with a specific classification.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="systemOrCode">Classification system name or reference code to search for.</param>
+            <param name="criteria">What to match: "System", "Code", or "Contains".</param>
+            <returns>List of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ByAttribute(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String,System.Object,System.Object)">
+            <summary>
+            Filters elements by schema attribute value.
+            Common attributes: GlobalId, Name, Description, Tag, ObjectType, PredefinedType, IfcClass.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="attributeName">Attribute name to filter by. Use AttributeNames() to see valid options.</param>
+            <param name="comparisonOperator">Comparison operator. Use ComparisonOperators() to see valid options.</param>
+            <param name="value">Value to compare against. Use null for "null"/"!null" operators.</param>
+            <param name="valueTo">Second value for "between" operator.</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ByProperty(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String,System.Object,System.Double,System.Double)">
+            <summary>
+            Filters elements by property value.
+            Searches both instance properties and type properties.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="propertyName">Property path: "PropertyName" (any PSet) or "PsetName.PropertyName" (specific PSet).</param>
+            <param name="comparisonOperator">Comparison operator. Use ComparisonOperators() to see valid options.</param>
+            <param name="value">Value to compare against.</param>
+            <param name="valueTo">Second value for "between" operator. Only required when comparisonOperator is "between".</param>
+            <param name="tolerance">Tolerance for numeric "=" comparison. Default 0.001.</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ByPropertySet(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String)">
+            <summary>
+            Filters elements by property set existence.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="psetName">Property set name to check.</param>
+            <param name="existsOperator">"exists" or "notexists".</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ByQuantity(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String,System.Double,System.Double,System.Double)">
+            <summary>
+            Filters elements by quantity value.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="quantityName">Quantity path: "QuantityName" (any QSet) or "QsetName.QuantityName" (specific QSet).</param>
+            <param name="comparisonOperator">Comparison operator: "=", "!=", ">", "&lt;", ">=", "&lt;=", "between".</param>
+            <param name="value">Value to compare against.</param>
+            <param name="valueTo">Second value for "between" operator. Only required when comparisonOperator is "between".</param>
+            <param name="tolerance">Tolerance for "=" comparison. Default 0.001.</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ByAssociation(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String,System.String,System.String)">
+            <summary>
+            Filters elements by association (material, classification, document, etc.).
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="associationType">Association type. Use AssociationTypes() to see valid options.</param>
+            <param name="existsOperator">"exists" or "notexists".</param>
+            <param name="matchValue">Optional value to match (e.g., material name, classification code).</param>
+            <param name="matchOperator">How to match the value: "=", "contains", etc.</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ByRelationship(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+            <summary>
+            Filters elements by relationship type.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="relationshipType">Relationship type. Use RelationshipTypes() to see valid options.</param>
+            <param name="existsOperator">"exists" or "notexists".</param>
+            <param name="targetGlobalId">Optional GlobalId of target element for specific relationship checks.</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.BySpatialContainment(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+            <summary>
+            Filters elements by spatial containment.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="spatialType">Spatial type filter. Use SpatialTypes() to see valid options: "Any", "Site", "Building", "Storey", "Space".</param>
+            <param name="spatialGlobalIdOrName">Optional GlobalId or Name of specific spatial element. 
+            Use IFCExplore.GetSpatialElements() to discover available spatial elements.</param>
+            <param name="nameOperator">How to match the name: "=", "contains", etc.</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.BySourceModel(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String)">
+            <summary>
+            Filters elements by their source model file name.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="sourceModelName">Source model name to match.</param>
+            <param name="matchOperator">How to match: "=" (exact), "contains", "startswith", "endswith".</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCFilter.ByTypeObject(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+            <summary>
+            Filters elements by type object assignment.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of GlobalIds to filter.</param>
+            <param name="existsOperator">"exists" (has type object) or "notexists" (no type object).</param>
+            <param name="matchValue">Optional type name or class to match.</param>
+            <param name="matchOperator">How to match: "=", "contains", etc.</param>
+            <returns>Filtered list of GlobalIds.</returns>
+        </member>
+        <member name="T:IFCNodes.IFCSchema">
+            <summary>
+            Provides static schema knowledge about IFC4x3 entities, properties, and quantities.
+            These nodes do not require an IFC model - they query embedded schema metadata.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetEntityInheritance(System.String)">
+            <summary>
+            Returns the full inheritance chain for an IFC class.
+            Example: IfcWall → IfcBuildingElement → IfcElement → IfcProduct → IfcObject → IfcObjectDefinition → IfcRoot
+            </summary>
+            <param name="ifcClassName">The IFC class name (e.g., "IfcWall", "IfcDoor", "Wall").</param>
+            <returns>List of class names from most specific to most general.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetEntitySubtypes(System.String)">
+            <summary>
+            Returns all direct and indirect subtypes of an IFC class.
+            Example: IfcBuildingElement returns IfcWall, IfcWallStandardCase, IfcDoor, IfcWindow, etc.
+            </summary>
+            <param name="ifcClassName">The IFC class name (e.g., "IfcBuildingElement", "IfcElement").</param>
+            <returns>List of all subtype class names.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetEntityAttributes(System.String)">
+            <summary>
+            Returns schema-defined explicit attributes for an IFC class including inherited attributes.
+            </summary>
+            <param name="ifcClassName">The IFC class name (e.g., "IfcWall").</param>
+            <returns>List of dictionaries containing Name, Type, IsOptional, and DeclaredIn for each attribute.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetEntityRelationships(System.String)">
+            <summary>
+            Returns schema-defined inverse relationships for an IFC class including inherited relationships.
+            Inverse relationships define how entities connect to each other (e.g., HasAssociations, IsDefinedBy).
+            </summary>
+            <param name="ifcClassName">The IFC class name (e.g., "IfcWall", "IfcProduct").</param>
+            <returns>List of dictionaries containing Name, RelatedEntity, AggregationType, and DeclaredIn.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetStandardPropertySets(System.String)">
+            <summary>
+            Returns standard buildingSMART Property Sets applicable to an IFC class.
+            Includes inherited PSets from parent classes.
+            </summary>
+            <param name="ifcClassName">The IFC class name (e.g., "IfcWall", "IfcDoor").</param>
+            <returns>List of dictionaries containing Name, Definition, TemplateType, ApplicableEntities, and Properties.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetStandardQuantitySets(System.String)">
+            <summary>
+            Returns standard buildingSMART Quantity Sets applicable to an IFC class.
+            Includes inherited QSets from parent classes.
+            </summary>
+            <param name="ifcClassName">The IFC class name (e.g., "IfcWall", "IfcSlab").</param>
+            <returns>List of dictionaries containing Name, Definition, TemplateType, ApplicableEntities, and Quantities.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetEnumerationValues(System.String)">
+            <summary>
+            Returns valid values for an IFC enumeration type.
+            Example: IfcWallTypeEnum returns MOVABLE, PARAPET, PARTITIONING, PLUMBINGWALL, etc.
+            </summary>
+            <param name="enumName">The IFC enumeration name (e.g., "IfcWallTypeEnum", "IfcDoorTypeEnum").</param>
+            <returns>List of valid enumeration values.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetPredefinedTypeValues(System.String)">
+            <summary>
+            Returns valid PredefinedType values for an IFC class.
+            Automatically finds the corresponding enum (e.g., IfcWall → IfcWallTypeEnum).
+            </summary>
+            <param name="ifcClassName">The IFC class name (e.g., "IfcWall", "IfcDoor").</param>
+            <returns>List of valid PredefinedType values.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetAllEntityNames">
+            <summary>
+            Returns all available IFC entity class names in the schema.
+            Useful for discovering what entity types exist.
+            </summary>
+            <returns>List of all IFC entity class names.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetAllStandardPropertySetNames">
+            <summary>
+            Returns all standard Property Set names from buildingSMART.
+            </summary>
+            <returns>List of all standard PSet names.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSchema.GetAllStandardQuantitySetNames">
+            <summary>
+            Returns all standard Quantity Set names from buildingSMART.
+            </summary>
+            <returns>List of all standard QSet names.</returns>
+        </member>
+        <member name="T:IFCNodes.IFCSpatialQueries">
+            <summary>
+            Provides spatial and geometric queries on IFC models using a Bounding Volume Hierarchy.
+            These queries detect geometric relationships not explicitly defined in the IFC schema.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetModelPrecision(IFCNodes.IFCModel)">
+            <summary>
+            Returns the model's geometric precision.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>The precision value in model units.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetOneMeterValue(IFCNodes.IFCModel)">
+            <summary>
+            Returns the value of one meter in the model's units.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>One meter expressed in model units.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetSpatialHierarchy(IFCNodes.IFCModel)">
+            <summary>
+            Builds and returns the spatial index structure for all loaded models.
+            Uses a Bounding Volume Hierarchy (BVH) for efficient spatial queries.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <returns>Dictionary containing the BVH structure, element count, and coordinate warnings.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetElementBoundingBox(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the axis-aligned bounding box of an element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The GlobalId of the element.</param>
+            <returns>Dictionary with MinX, MinY, MinZ, MaxX, MaxY, MaxZ, SizeX, SizeY, SizeZ, CenterX, CenterY, CenterZ.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.QueryByBoundingBox(IFCNodes.IFCModel,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Returns all elements whose bounding boxes intersect the specified region.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="minX">Minimum X coordinate.</param>
+            <param name="minY">Minimum Y coordinate.</param>
+            <param name="minZ">Minimum Z coordinate.</param>
+            <param name="maxX">Maximum X coordinate.</param>
+            <param name="maxY">Maximum Y coordinate.</param>
+            <param name="maxZ">Maximum Z coordinate.</param>
+            <returns>List of GlobalIds of elements in the region.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetIntersectingElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements whose bounding boxes intersect (overlap) with the source element.
+            Intersection means the boxes share volume.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The GlobalId of the source element.</param>
+            <returns>List of GlobalIds of intersecting elements.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetTouchingElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements whose bounding boxes touch the source element.
+            Touching means the boxes share a boundary but do not overlap.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The GlobalId of the source element.</param>
+            <returns>List of GlobalIds of touching elements.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetContainedElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements whose bounding boxes are fully contained within the source element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The GlobalId of the source element.</param>
+            <returns>List of GlobalIds of contained elements.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetContainingElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements whose bounding boxes fully contain the source element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The GlobalId of the source element.</param>
+            <returns>List of GlobalIds of containing elements.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetNearbyElements(IFCNodes.IFCModel,System.String,System.Double)">
+            <summary>
+            Returns all elements within a specified distance from the source element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The GlobalId of the source element.</param>
+            <param name="searchRadius">Maximum distance to search in model units.</param>
+            <returns>List of dictionaries containing GlobalId and Distance for each nearby element.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetElementsOnStorey(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements located on a specific building storey.
+            Uses explicit storey elevation and height when available, falls back to geometric detection.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="storeyGlobalIdOrName">The GlobalId or Name of the building storey.</param>
+            <returns>List of GlobalIds of elements on the storey.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetSpaceBoundingElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements that bound a specific space.
+            Combines explicit IFC relationships and geometric proximity detection.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="spaceGlobalId">The GlobalId of the IfcSpace.</param>
+            <returns>List of dictionaries containing GlobalId, Name, IfcClass, SourceModel, and RelationType.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCSpatialQueries.GetConnectedElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements geometrically connected to the source element.
+            Includes intersecting, touching, and contained elements.
+            For explicit IFC relationships, use IFCQuery.GetConnectivity instead.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The GlobalId of the source element.</param>
+            <returns>List of dictionaries containing GlobalId, Name, IfcClass, SourceModel, and RelationType.</returns>
+        </member>
+        <member name="M:IFCNodes.Internal.SemanticQueryResolver.ResolveQueryAsync(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Resolves semantic search query and verifies explicit property/quantity names against model context.
+            </summary>
+        </member>
+        <member name="T:IFCNodes.MarkdownFormatter">
+            <summary>
+            Formats markdown text for display in WPF RichTextBox controls using Markdig.
+            Handles special [[shortId|globalId]] patterns for IFC element references.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderMarkdown(System.String,System.Windows.Documents.FlowDocument)">
+            <summary>
+            Renders markdown text to a FlowDocument using Markdig.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.ProtectIdPatterns(System.String)">
+            <summary>
+            Protects [[shortId|globalId]] patterns by replacing them with placeholders.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderBlock(Markdig.Syntax.Block,System.Windows.Documents.FlowDocument,System.Boolean)">
+            <summary>
+            Renders a markdown block element.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderHeading(Markdig.Syntax.HeadingBlock,System.Windows.Documents.FlowDocument)">
+            <summary>
+            Renders a heading block.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderParagraph(Markdig.Syntax.ParagraphBlock,System.Windows.Documents.FlowDocument,System.Boolean)">
+            <summary>
+            Renders a paragraph block.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderList(Markdig.Syntax.ListBlock,System.Windows.Documents.FlowDocument,System.Int32)">
+            <summary>
+            Renders a list block (ordered or unordered), with support for nested lists.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderTable(Markdig.Extensions.Tables.Table,System.Windows.Documents.FlowDocument)">
+            <summary>
+            Renders a table block with CSV export functionality.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.ExtractTableData(Markdig.Extensions.Tables.Table)">
+            <summary>
+            Extracts table data as a list of rows, each row being a list of cell strings.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.GetPlainTextFromContainer(Markdig.Syntax.ContainerBlock)">
+            <summary>
+            Gets plain text from a container block.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.GetPlainTextFromInlines(Markdig.Syntax.Inlines.ContainerInline,System.Text.StringBuilder)">
+            <summary>
+            Gets plain text from inline elements.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RestorePlaceholdersToOriginal(System.String)">
+            <summary>
+            Restores placeholders to original [[shortId|globalId]] format.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderCodeBlock(Markdig.Syntax.LeafBlock,System.Windows.Documents.FlowDocument)">
+            <summary>
+            Renders a code block.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderQuoteBlock(Markdig.Syntax.QuoteBlock,System.Windows.Documents.FlowDocument)">
+            <summary>
+            Renders a quote block.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderThematicBreak(System.Windows.Documents.FlowDocument)">
+            <summary>
+            Renders a thematic break (horizontal rule).
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderInlines(Markdig.Syntax.Inlines.ContainerInline,System.Windows.Documents.InlineCollection,System.Boolean)">
+            <summary>
+            Renders inline elements to an InlineCollection.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderInline(Markdig.Syntax.Inlines.Inline,System.Windows.Documents.InlineCollection,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Renders a single inline element.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderTextWithPlaceholders(System.String,System.Windows.Documents.InlineCollection,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Renders text containing placeholders, replacing them with appropriate ID inlines.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.AddTextRun(System.String,System.Windows.Documents.InlineCollection,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Adds a text run with optional bold/italic/strikethrough formatting.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderLink(Markdig.Syntax.Inlines.LinkInline,System.Windows.Documents.InlineCollection,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Renders a hyperlink.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:IFCNodes.MarkdownFormatter.AddShortIdInline(System.String,System.String,System.Windows.Documents.InlineCollection,System.Boolean,System.Boolean,System.Boolean)" -->
+        <member name="M:IFCNodes.MarkdownFormatter.AddGlobalIdInline(System.String,System.String,System.Windows.Documents.InlineCollection,System.Boolean)">
+            <summary>
+            Adds a GlobalId inline element with shortId tooltip (for tables).
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.RenderPlainTextWithIds(System.String,System.Windows.Documents.InlineCollection)">
+            <summary>
+            Renders plain text with ID processing (for TextBlock targets).
+            </summary>
+        </member>
+        <member name="M:IFCNodes.MarkdownFormatter.ExportBtn_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Handles CSV export button click.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCGeometry.GetElementGeometry(IFCNodes.IFCModel,System.Collections.Generic.List{System.String})">
+            <summary>
+            Extracts geometry from IFC elements and converts them to Dynamo meshes.
+            Uses pre-cached geometry for optimal performance.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of Global Unique IDs (GUIDs) of the elements.</param>
+            <returns>List of Dynamo Mesh geometry objects. Null entries indicate elements where geometry is not available.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCGeometry.GetRepresentationGeometry(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Extracts geometry from a specific representation of IFC elements.
+            Note: Only Body representation uses the pre-built cache. Other representations are extracted on-demand.
+            Use GetElementRepresentations from IFCQuery to find available representation identifiers.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of Global Unique IDs (GUIDs) of the elements.</param>
+            <param name="representationIdentifier">The representation identifier to extract (e.g., "Body", "Axis", "FootPrint").
+            If empty, extracts Body representation or all representations if Body is not found.</param>
+            <returns>List of Dynamo Mesh geometry objects. Null entries indicate elements where geometry extraction failed.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCGeometry.GetAllRepresentationGeometries(IFCNodes.IFCModel,System.Collections.Generic.List{System.String})">
+            <summary>
+            Extracts geometry from all representations of IFC elements as separate meshes.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of Global Unique IDs (GUIDs) of the elements.</param>
+            <returns>Nested list of Dynamo Mesh geometry objects, one list per element containing meshes for each representation.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCGeometry.GetElementBoundingBox(IFCNodes.IFCModel,System.Collections.Generic.List{System.String})">
+            <summary>
+            Returns the Axis-Aligned Bounding Box of elements as Dynamo Solids.
+            Uses pre-cached bounding boxes for optimal performance.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalIds">List of Global Unique IDs (GUIDs) of the elements.</param>
+            <returns>List of Dynamo Cuboids representing the bounding boxes in world coordinates. Null entries indicate elements without bounding boxes.</returns>
+        </member>
+        <member name="T:IFCNodes.IFCQuery">
+            <summary>
+            Provides element-level data retrieval methods.
+            All methods accept a single GlobalId - Dynamo handles list inputs via lacing.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetElementData(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns complete data for an IFC element including identity, type info, attributes,
+            properties, quantities, materials, associations, composition, assignments, connectivity,
+            and spatial containment.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary containing all element data organized by category.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetElementRepresentations(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns detailed information about an element's representations and mapped representations.
+            Useful for understanding geometry structure and debugging extraction issues.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary containing representation details including types, identifiers, and item counts.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetIdentity(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns identity information for an element including GlobalId, Name, Description,
+            Tag, ObjectType, and OwnerHistory.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with identity information.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetTypeInheritanceChain(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns type and inheritance information for an element including IfcClass, InheritanceChain,
+            PredefinedType, and IsAbstract.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with type and inheritance information.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetAttributes(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all explicit attributes for an element based on the IFC schema.
+            Includes attributes inherited from parent classes.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with attribute names and values.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetTypeDefinition(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the type object definition for an element via the IsTypedBy relationship.
+            Includes type properties, quantities, and materials.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with type object data.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetProperties(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all property sets for an element with their properties.
+            For standard PSets, includes metadata about expected and missing properties.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with property set names as keys and property data as values.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetPropertyValue(IFCNodes.IFCModel,System.String,System.String)">
+            <summary>
+            Returns a single property value for an element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <param name="propertyPath">Property path: "PropertyName" or "PsetName.PropertyName".</param>
+            <returns>The property value, or empty string if not found.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetQuantities(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all quantity sets for an element with their quantities.
+            For standard QSets, includes metadata about expected and missing quantities.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with quantity set names as keys and quantity data as values.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetQuantityValue(IFCNodes.IFCModel,System.String,System.String)">
+            <summary>
+            Returns a single quantity value for an element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <param name="quantityPath">Quantity path: "QuantityName" or "QsetName.QuantityName".</param>
+            <returns>The quantity value, or 0 if not found.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetAssociations(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all associations for an element including materials, classifications,
+            documents, libraries, constraints, and approvals.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with association categories.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetMaterials(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns material data for an element including single materials, layer sets,
+            profile sets, and constituent sets. If the element has no direct material association,
+            returns the material from its type object.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with material information.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetClassifications(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns classification references for an element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of classification dictionaries.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetDocuments(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns document references for an element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of document dictionaries.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetComposition(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns composition relationships for an element including aggregation (Decomposes/IsDecomposedBy),
+            nesting (Nests/IsNestedBy), openings, coverings, projections, and surface features.
+            Note: This returns explicitly defined IFC relationships only. For geometric-based 
+            relationships (e.g., elements physically inside other elements), use IFCSpatialQueries.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with composition relationships.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetOpenings(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns openings (voids) in an element and the elements that fill them.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of opening dictionaries with FilledBy information.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetHostElement(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the host element if this element fills a void (e.g., door in wall).
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with host element information, or empty if not filling a void.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetAssignments(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all assignment relationships for an element including groups, systems,
+            zones, actors, processes, controls, and resources.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with assignment categories.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetGroups(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the groups an element is assigned to.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of group dictionaries.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetConnectivity(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all connectivity relationships for an element including element connections,
+            path connections, ports, interferences, and space boundaries.
+            Note: This returns explicitly defined IFC relationships only. For geometric-based 
+            connectivity (e.g., elements touching or intersecting), use IFCSpatialQueries.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with connectivity categories.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetConnectedElements(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns all elements connected to this element via explicit IFC relationships.
+            Note: This returns explicitly defined IFC relationships only. For geometric-based 
+            connectivity (e.g., elements touching or intersecting), use IFCSpatialQueries.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of connected element dictionaries.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetSpatialContainment(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns spatial containment information for an element including the containing
+            spatial structure and referenced structures.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with spatial containment and placement.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetContainingElement(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the spatial structure element containing this element (e.g., the storey).
+            Note: This returns the explicitly defined spatial containment relationship only.
+            For geometric-based containment, use IFCSpatialQueries.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with containing spatial element, or empty if not contained.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetPlacement(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the placement/location of an element in the model coordinate system.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with X, Y, Z coordinates and placement type.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetSpaceBoundaries(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns space boundaries for an element - which spaces it bounds.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of space boundary dictionaries.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.ElementExists(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Checks if an element exists in the model.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) to check.</param>
+            <returns>True if element exists, false otherwise.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetElementSummary(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns basic summary information for an element.
+            Useful for quick identification without retrieving all data.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>Dictionary with GlobalId, Name, IfcClass, and PredefinedType.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetElementsOfSameType(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the GlobalIds of all elements that share the same type object as the given element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of GlobalIds sharing the same type object.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCQuery.GetElementsInSameContainer(IFCNodes.IFCModel,System.String)">
+            <summary>
+            Returns the GlobalIds of all elements in the same spatial container as the given element.
+            </summary>
+            <param name="ifcModel">The loaded IFC Model.</param>
+            <param name="globalId">The Global Unique ID (GUID) of the element.</param>
+            <returns>List of GlobalIds in the same spatial container.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCViewer.ViewIFCModel(IFCNodes.IFCModel)">
+            <summary>
+            Opens a 3D viewer for the loaded IFC Model.
+            Displays all models in a federated project.
+            </summary>
+            <param name="ifcModel">The wrapper containing the IFC Store(s).</param>
+            <returns>Status message.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCViewer.ViewWithHighlight(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Opens the viewer and highlights specific elements by their Global Unique IDs (GUIDs).
+            Scans all loaded models to find the matching elements.
+            </summary>
+            <param name="ifcModel">The IFC Model wrapper.</param>
+            <param name="globalIds">List of GlobalIds (Strings) to highlight.</param>
+            <param name="color">Highlight Color (e.g., "Red", "Blue", "#FF0000").</param>
+            <returns>Status message.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCViewer.ViewWithColorGroups(IFCNodes.IFCModel,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{System.String}})">
+            <summary>
+            Opens the viewer and highlights multiple groups of elements with different colors.
+            </summary>
+            <param name="ifcModel">The IFC Model wrapper.</param>
+            <param name="colors">List of color strings (e.g., "Red", "Green", "#FF0000").</param>
+            <param name="globalIdGroups">Nested list of GlobalIds where each sublist corresponds to a color.</param>
+            <returns>Status message.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCViewer.ViewIsolated(IFCNodes.IFCModel,System.Collections.Generic.List{System.String})">
+            <summary>
+            Opens the viewer showing only the specified elements (isolation mode).
+            </summary>
+            <param name="ifcModel">The IFC Model wrapper.</param>
+            <param name="globalIds">List of GlobalIds to isolate and display.</param>
+            <returns>Status message.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCReader.LoadIFCModel(System.String,System.String)">
+            <summary>
+            Loads IFC file(s) into a model wrapper. Automatically discovers and loads related IFC files from the same directory.
+            Geometry is extracted and cached during loading for optimal performance.
+            </summary>
+            <param name="ifcFilePath">Path to the primary IFC file.</param>
+            <param name="federationDirectory">Optional: Directory path to search for additional IFC files. If empty, searches the same directory as the primary file. Set to "none" to disable auto-discovery and load only the specified file.</param>
+            <returns>An IFCModel wrapper containing all loaded models with pre-built geometry cache.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCReader.CreateIFCModel(System.String,System.String)">
+            <summary>
+            Creates a new empty IFC model with minimal structure.
+            Creates: IfcProject → IfcSite → IfcBuilding → IfcBuildingStorey
+            </summary>
+            <param name="filePath">Path where the IFC file will be saved.</param>
+            <param name="projectName">Optional name for the project. Default is "New Project".</param>
+            <returns>An IFCModel wrapper containing the new model.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCModel.GetProduct(System.String)">
+            <summary>
+            Gets an IIfcProduct by GlobalId with O(1) lookup.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCModel.GetProductWithStore(System.String)">
+            <summary>
+            Gets an IIfcProduct and its store by GlobalId with O(1) lookup.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.IFCModel.GetLoadedModelNames">
+            <summary>
+            Returns the names of all loaded models in the federation.
+            </summary>
+            <returns>List of model names.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCModel.GetModelSummary">
+            <summary>
+            Returns summary statistics for all loaded models.
+            </summary>
+            <returns>Dictionary containing federation status, model count, names, and per-model statistics.</returns>
+        </member>
+        <member name="M:IFCNodes.IFCModel.GetGeometryErrors">
+            <summary>
+            Returns a list of all geometry extraction errors that occurred during model loading.
+            </summary>
+            <returns>List of error messages for elements where geometry extraction failed.</returns>
+        </member>
+        <member name="M:IFCNodes.InteractiveViewerWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:IFCNodes.SpatialIndexManager.BuildGeometryCache(IFCNodes.IFCModel)">
+            <summary>
+            Builds the geometry cache for all products in the model.
+            Should be called once at model load time.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.SpatialIndexManager.GetModelBounds">
+            <summary>
+            Gets the overall model bounds from cached data.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.ViewportCapture.CaptureSingleView(Xbim.Presentation.DrawingControl3D,IFCNodes.ViewportCapture.ViewDirection,System.Nullable{Xbim.Common.Geometry.XbimRect3D})">
+            <summary>
+            Captures a single view from the specified direction.
+            </summary>
+            <param name="viewer">The DrawingControl3D viewer.</param>
+            <param name="direction">The view direction to capture.</param>
+            <param name="targetBounds">Optional: XbimRect3D bounds to focus on. If null, uses entire model bounds.</param>
+            <returns>Base64 encoded JPEG image, or null on failure.</returns>
+        </member>
+        <member name="M:IFCNodes.ViewportCapture.CaptureCurrentView(Xbim.Presentation.DrawingControl3D)">
+            <summary>
+            Captures the current view without modifying the camera.
+            </summary>
+        </member>
+        <member name="M:IFCNodes.ViewportCapture.CaptureMultipleViews(Xbim.Presentation.DrawingControl3D,IFCNodes.ViewportCapture.ViewDirection[],System.Nullable{Xbim.Common.Geometry.XbimRect3D})">
+            <summary>
+            Captures multiple views with proper camera positioning for each.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:IFCNodes.ViewportCapture.GetCombinedBounds(IFCNodes.IFCModel,System.Collections.Generic.IEnumerable{System.String},Xbim.Presentation.DrawingControl3D)" -->
+        <member name="M:IFCNodes.ViewportCapture.TransformBoundsToViewSpace(Xbim.Common.Geometry.XbimRect3D,Xbim.Presentation.DrawingControl3D,System.Double)">
+            <summary>
+            Transforms a bounding box from model space to view space coordinates.
+            Handles unit conversion and view space translation.
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>

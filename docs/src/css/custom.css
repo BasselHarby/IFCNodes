@@ -1,0 +1,212 @@
+:root {
+  --ifcblue: #2563eb;
+  --ifcblue-dark: #1d4ed8;
+  --ifcblue-light: #3b82f6;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifb-background-color: #f8fafc;
+  --ifb-card-background: #ffffff;
+  --ifb-border-color: #e2e8f0;
+}
+
+[data-theme='dark'] {
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifb-background-color: #0f172a;
+  --ifb-card-background: #1e293b;
+  --ifb-border-color: #334155;
+}
+
+/* Node visualization styles */
+.node-container {
+  background: var(--ifb-card-background);
+  border: 2px solid var(--ifcblue);
+  border-radius: 8px;
+  padding: 0;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.node-header {
+  background: var(--ifcblue);
+  color: white;
+  padding: 10px 15px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.node-body {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  gap: 20px;
+}
+
+.node-inputs, .node-outputs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.node-port {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.node-inputs .node-port::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: var(--ifcblue);
+  border-radius: 50%;
+}
+
+.node-outputs .node-port::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: var(--ifcblue);
+  border-radius: 50%;
+}
+
+.port-name {
+  font-weight: 500;
+}
+
+.port-type {
+  color: #64748b;
+  font-size: 11px;
+}
+
+/* Parameter table styles */
+.param-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.param-table th {
+  background: var(--ifcblue);
+  color: white;
+  padding: 10px 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.param-table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--ifb-border-color);
+}
+
+.param-table tr:last-child td {
+  border-bottom: none;
+}
+
+.param-name {
+  font-weight: 600;
+  color: var(--ifcblue);
+}
+
+.param-type {
+  font-family: 'Consolas', 'Monaco', monospace;
+  background: var(--ifb-background-color);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Category cards */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.category-card {
+  background: var(--ifb-card-background);
+  border: 1px solid var(--ifb-border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.category-card:hover {
+  border-color: var(--ifcblue);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
+}
+
+.category-card h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--ifcblue);
+}
+
+.category-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Alert/note boxes */
+.alert-box {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.alert-box.info {
+  background: #eff6ff;
+  border-left: 4px solid var(--ifcblue);
+}
+
+.alert-box.warning {
+  background: #fefce8;
+  border-left: 4px solid #eab308;
+}
+
+.alert-box.tip {
+  background: #f0fdf4;
+  border-left: 4px solid #22c55e;
+}
+
+[data-theme='dark'] .alert-box.info {
+  background: #1e3a5f;
+}
+
+[data-theme='dark'] .alert-box.warning {
+  background: #422006;
+}
+
+[data-theme='dark'] .alert-box.tip {
+  background: #052e16;
+}
+
+/* Tool list for IFC Chat */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.tool-card {
+  background: var(--ifb-card-background);
+  border: 1px solid var(--ifb-border-color);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.tool-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 14px;
+  color: var(--ifcblue);
+}
+
+.tool-card p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
